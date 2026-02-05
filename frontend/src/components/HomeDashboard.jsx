@@ -27,7 +27,7 @@ const mySkills = [
 
 function HomeDashboard() { 
   return (
-    <div className='w-full  grid grid-cols-1 lg:grid-cols-2'>
+    <div className='w-full  grid grid-cols-1 lg:grid-cols-2 overflow-y-scroll'>
         {/*left side */}
         <div className="lg:col-span-1 grid grid-cols-1 gap-2">
             <MySkills skills={mySkills}/>

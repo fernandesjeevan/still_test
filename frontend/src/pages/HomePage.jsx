@@ -6,9 +6,9 @@ import HomeDashboard from '../components/HomeDashboard.jsx'
 function HomePage() {
   return (
     <div className="relative w-full h-full border-2 flex">
-      <Sidebar className="w-60"/>
-      <div className='flex flex-1 flex-col border-2 border-red-300'>
-      <Header/>
+      <Sidebar/>
+      <div className='flex flex-1 flex-col border-gray-700'>
+      <Header pageName="Home"/>
       
       <HomeDashboard/>
       </div>

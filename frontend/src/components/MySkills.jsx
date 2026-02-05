@@ -42,7 +42,7 @@ function MySkills({skills}) {
       "
     >
       {/* Row 1: Title */}
-      <h2 className="m-2 p-2 text-sm font-semibold text-gray-700">My Skills</h2>
+      <h2 className="m-2 p-2  font-semibold text-gray-700">My Skills</h2>
 
       {/* Row 2: Content area */}
       <div
@@ -63,9 +63,13 @@ function MySkills({skills}) {
             rounded-md
             shadow-sm
             flex 
-            flex-wrap
-            overflow-x-hidden
+
+            overflow-x-scroll
             gap-2
+              max-h-32
+    transition-all
+    duration-700
+        hover:max-h-[1000px]
           "
         >
         {
