@@ -4,8 +4,9 @@ import SidebarCollapseUp from "../assets/collapse-up.svg";
 import Certifications from "../assets/certifications.svg";
 import SkillsLogo from "../assets/skills.svg";
 import TalentSearch from "../assets/talentsearch.svg";
-import Dashboard from "../assets/dashboard.svg"
-function Sidebar() {
+import Dashboard from "../assets/dashboard.svg";
+import { NavLink } from "react-router-dom";
+function  Sidebar() {
   return (
     <div className="w-60 border-2 border-gray-300 flex flex-col">
       <div className="h-10 flex items-center justify-around my-3">
@@ -23,12 +24,16 @@ function Sidebar() {
           <img className="h-6" src={SidebarCollapseUp} alt="collapse up" />
         </div>
         <div className="flex flex-col">
-          <div className="flex my-2 py-2">
+          <NavLink
+              to="/"
+              className="flex items-center my-2 py-2 hover:bg-gray-100 rounded"
+            >
+              <div className="flex my-2 py-2">
             <img className="h-6 mx-2" src={Dashboard} alt="collapse up" />
-            <h1 className="text-s font-semibold text-gray-700">
-              Dashboard
-            </h1>
+            <h1 className="text-s font-semibold text-gray-700">Dashboard</h1>
           </div>
+            </NavLink>
+          
           <div className="flex my-2 py-2">
             <img className="h-6 mx-2" src={Certifications} alt="collapse up" />
             <h1 className="text-s font-semibold text-gray-700">
@@ -36,8 +41,14 @@ function Sidebar() {
             </h1>
           </div>
           <div className="flex my-2 py-2">
-            <img className="h-6 mx-2" src={SkillsLogo} alt="collapse up" />
+            <NavLink
+              to="/skill"
+              className="flex items-center my-2 py-2 hover:bg-gray-100 rounded"
+            >
+              <img className="h-6 mx-2" src={SkillsLogo} alt="collapse up" />
             <h1 className="text-s font-semibold text-gray-700">Skills </h1>
+            </NavLink>
+            
           </div>
           <div className="flex my-2 py-2">
             <img className="h-6 mx-2" src={TalentSearch} alt="collapse up" />
