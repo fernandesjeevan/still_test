@@ -352,7 +352,7 @@ export default function AddSkillDrawer({ open, onClose }) {
                   ></img>
                   <div className="flex flex-col flex-1">
                     <label> Jeevan Fernandes</label>
-                    <label className="text-gray-4   00">
+                    <label className="text-gray-400">
                       {" "}
                       jeevan.fernandes@gmail.com
                     </label>
