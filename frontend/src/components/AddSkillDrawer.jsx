@@ -372,8 +372,13 @@ export default function AddSkillDrawer({ open, onClose }) {
                 >
                   Cancel
                 </button>
-                <button type ="submit" form=  "skillSubmissionForm"className="text-white border-2 rounded-sm border-gray-900 bg-blue-700 mx-2 p-2">
-                  + Submit Skill
+                <button
+                  type="submit"
+                  form="skillSubmissionForm"
+                  className="text-white border-2 rounded-sm border-gray-900 bg-blue-700 mx-2 p-2"
+                >
+                   Submit Skill
+                </button>
                 </button>
               </div>
       </div>
