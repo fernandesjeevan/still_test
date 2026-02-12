@@ -280,7 +280,8 @@ export default function AddSkillDrawer({ open, onClose }) {
                 { value: 4, label: "Advanced" },
                 { value: 5, label: "Expert" },
               ].map((level) => (
-                <div
+                /*TODO:FUTURE somehting to do with keyboard users*/
+                <div 
                   key={level.value}
                   onClick={() => setRating(level.value)}
                   onMouseEnter={() => setHoverRating(level.value)}
@@ -379,7 +380,7 @@ export default function AddSkillDrawer({ open, onClose }) {
                 >
                    Submit Skill
                 </button>
-                </button>
+              
               </div>
       </div>
     </>
