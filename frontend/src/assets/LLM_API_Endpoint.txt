@@ -1,0 +1,78 @@
+LLM_API_Endpoint → full base URL including path (examples below)
+OpenAI: https://api.openai.com/v1/chat/completions
+Azure OpenAI: https://your-resource.openai.azure.com/openai/deployments/your-model/chat/completions?api-version=2024-10-21
+Anthropic: https://api.anthropic.com/v1/messages
+Gemini: https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent (note: model is dynamic)
+
+LLM_Auth_Header_Name → e.g. Authorization | x-api-key | x-goog-api-key
+LLM_Auth_Header_Value → secret type
+Bearer sk-... (OpenAI)
+api-key: your-azure-key (Azure – or use connection reference)
+your-anthropic-key (Anthropic)
+your-gemini-key (Gemini)
+
+LLM_ApiVersion_Query → optional, e.g. ?api-version=2024-10-21 (Azure) or empty
+LLM_Default_Model → fallback if not sent in input
+LLM_Provider → optional string to enable light conditional mapping (openai | azure-openai | anthropic | gemini)
+
+
+
+{
+  "model": "gpt-4o",                     // optional – falls back to env var
+  "messages": [
+    { "role": "system", "content": "You are a helpful assistant." },
+    { "role": "user",   "content": "Summarize this long report: ..." }
+  ],
+  "temperature": 0.3,
+  "max_tokens": 800,
+  "response_format": { "type": "json_object" },
+  "system": "Extra system prompt if needed (Anthropic style)",
+  "additional_params": { "some": "provider extra" }
+}
+
+
+{
+  "type": "object",
+  "properties": {
+    "model": { "type": "string" },
+    "messages": { "type": "array", "items": { "type": "object", "properties": { "role": {}, "content": {} } } },
+    "system": { "type": "string" },
+    "temperature": { "type": "number", "default": 0.7 },
+    "max_tokens": { "type": "integer", "default": 2048 },
+    "top_p": { "type": "number" },
+    "response_format": { "type": "object" },
+    "additional_params": { "type": "object" },
+    "apiEndpoint": { "type": "string", "description": "Optional override – normally use env var LLM_API_Endpoint" }
+  },
+  "required": ["messages"]
+}
+
+
+Base Request works with openai and azure, deepseek, gemini
+
+{
+  "model": "@{coalesce(triggerBody()?['model'], variables('LLM_Default_Model'))}",
+  "messages": "@{triggerBody()?['messages']}",
+  "temperature": "@{coalesce(triggerBody()?['temperature'], 0.7)}",
+  "max_tokens": "@{coalesce(triggerBody()?['max_tokens'], 2048)}",
+  "top_p": "@{triggerBody()?['top_p']}",
+  "response_format": "@{triggerBody()?['response_format']}"
+}
+
+add condition for anthropic
+
+{
+  ...extra
+  "system": "@{coalesce(triggerBody()?['system'], '')}",
+  "max_tokens": "@{coalesce(triggerBody()?['max_tokens'], 4096)}"  // Anthropic default higher
+}
+
+Response structure is same for evry
+
+{
+  "success": true,
+  "generated_text": "@{coalesce(body('Parse_JSON')?['choices']?[0]?['message']?['content'], body('Parse_JSON')?['content']?[0]?['text'], body('Parse_JSON')?['candidates']?[0]?['content']?['parts']?[0]?['text'], body('Parse_JSON')?['text'], 'No content')}",
+  "full_response": "@{body('Parse_JSON')}",
+  "usage": "@{body('Parse_JSON')?['usage']}",
+  "error": null
+}
