@@ -69,7 +69,7 @@ function MySkills({skills}) {
               max-h-32
     transition-all
     duration-700
-        hover:max-h-[1000px]
+        hover:max-h-250
           "
         >
         {
