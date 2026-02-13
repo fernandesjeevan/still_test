@@ -15,7 +15,7 @@ def skill_form_parser(
     skill: str = Form(...),
     rating: int = Form(...),
     description: str = Form(None),
-    approverId: str = Form(...),
+    approverId: int = Form(...),
     approverName: str = Form(...),
     approverEmail: str = Form(...),
 )->SkillSubmissionFormSchema:

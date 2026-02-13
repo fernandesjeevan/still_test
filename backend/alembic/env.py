@@ -15,6 +15,8 @@ target_metadata = Base.metadata
 # access to the values within the .ini file in use.
 config = context.config
 database_url = os.getenv("DB_URL")
+if not database_url:
+    raise RuntimeError("DB_URL environment variable is not set")
 database_url = database_url.replace("%", "%%")
 config.set_main_option("sqlalchemy.url", database_url)
 # Interpret the config file for Python logging.

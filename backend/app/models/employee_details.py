@@ -16,10 +16,10 @@ class EmployeeDetails(Base):
 
     user_id = Column(Integer, primary_key=True, index=True)
 
-    employee_id = Column(String(500), nullable=True)
+    employee_id = Column(String(500), nullable=True,unique=True)
     full_name = Column(String(2000), nullable=True)
     job_location = Column(String(200), nullable=True)
-    email = Column(String(200), nullable=True)
+    email = Column(String(200), nullable=True,unique=True)
     service_line = Column(String(1000), nullable=True)
     job_title = Column(String(200), nullable=True)
     first_name = Column(String(500), nullable=True)
