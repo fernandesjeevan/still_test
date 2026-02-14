@@ -1,15 +1,19 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI,status,HTTPException    
 from .models.user_skills import UserSkills
+from .models.employee_details import EmployeeDetails
 from .schemas.skill_submission_schema import SkillSubmissionFormSchema
+from .schemas.signup_form_schema import SignupFormSchema
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import UploadFile, File, Depends
 from .api.core.dependencies import skill_form_parser
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 from .api.core.dependencies import get_db
 from .db.base import Base
 from .db.session import engine
 from datetime import datetime
+from .utils.hashing import hash_password
 
 origins = ["http://localhost:5173","http://127.0.0.1:5173"]
 
@@ -36,8 +40,31 @@ app.add_middleware(
 
 
 @app.get("/")
-async def hello():
+async def home():
     return {"message": "helo"}
+
+
+@app.post("/signup",status_code=status.HTTP_201_CREATED)
+async def signup(signup_form: SignupFormSchema, db:Session =Depends(get_db)):
+    print("hello")
+    stmt = select(EmployeeDetails).where(EmployeeDetails.email==signup_form.email)
+    existing_user=db.execute(stmt).first()
+    if(existing_user):
+         raise HTTPException(   
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email already registered"
+        )
+    
+
+    # Create new user
+    emp_db_obj = EmployeeDetails(
+        email = signup_form.email,
+        password = hash_password(signup_form.password)
+    )
+    db.add(emp_db_obj)
+    db.commit()
+    db.refresh(emp_db_obj)
+    return {"message":f"user {signup_form.email} created successfully"}
 
 
 @app.post("/skillSubmit")

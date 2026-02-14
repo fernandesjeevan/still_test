@@ -17,6 +17,7 @@ class EmployeeDetails(Base):
     user_id = Column(Integer, primary_key=True, index=True)
 
     employee_id = Column(String(500), nullable=True,unique=True)
+    password = Column(String(200))
     full_name = Column(String(2000), nullable=True)
     job_location = Column(String(200), nullable=True)
     email = Column(String(200), nullable=True,unique=True)
