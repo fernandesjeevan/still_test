@@ -46,7 +46,7 @@ async def home():
 
 @app.post("/signup",status_code=status.HTTP_201_CREATED)
 async def signup(signup_form: SignupFormSchema, db:Session =Depends(get_db)):
-    print("hello")
+    # print("hello")
     stmt = select(NCEmployeeDetails).where(NCEmployeeDetails.email==signup_form.email)
     existing_user=db.execute(stmt).first()
     if(existing_user):
@@ -97,6 +97,6 @@ async def skill_submit(
     #     contents = await evidence.read()
         
     #     print("File:", evidence.filename, len(contents)) 
-    print(form_data)
+    # print(form_data)
 
     return {"message": "Received successfully"}

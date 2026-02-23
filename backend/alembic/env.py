@@ -7,7 +7,7 @@ from app.models.nc_config_table import NCConfigTable
 from app.models.nc_employee_details import NCEmployeeDetails
 from app.models.nc_monitor_log_parent import NCMonitorLogParent
 from app.models.nc_monitor_log_child import NCMonitorLogChild
-from app.models.nc_role_master import NCRoleMasters
+from app.models.nc_role_master import NCRoleMaster
 from app.models.nc_status_colour import NCStatusColour
 from app.models.st_attachment_logs import STAttachmentLogs
 from app.models.st_audit_logs import STAuditLogs

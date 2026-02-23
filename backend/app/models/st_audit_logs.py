@@ -36,7 +36,7 @@ class STAuditLogs(Base):
 
     created_on: Mapped[datetime | None] = mapped_column(
         TIMESTAMP,
-        default= func.now()
+        server_default= func.now()
     )
 
     modified_on: Mapped[datetime | None] = mapped_column(
