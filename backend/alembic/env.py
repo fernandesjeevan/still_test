@@ -1,24 +1,29 @@
 from logging.config import fileConfig
-from alembic import context
-import os
-from dotenv import load_dotenv
+
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
 from app.db.base import Base
-from app.models.employee_details import EmployeeDetails
-from app.models.user_skills import UserSkills
-from app.db.session import engine
-load_dotenv()
-
-target_metadata = Base.metadata
-
+from app.models.nc_config_table import NCConfigTable
+from app.models.nc_employee_details import NCEmployeeDetails
+from app.models.nc_monitor_log_parent import NCMonitorLogParent
+from app.models.nc_monitor_log_child import NCMonitorLogChild
+from app.models.nc_status_colour import NCStatusColour
+from app.models.st_attachment_logs import STAttachmentLogs
+from app.models.st_audit_logs import STAuditLogs
+from app.models.st_certification_master import STCertificationMaster
+from app.models.st_master_issuing_authority import STMasterIssuingAuthority
+from app.models.st_navigation_bar import STNavigationBar 
+from app.models.st_skill_master import STSkillMaster
+from app.models.st_skill_proficiency_level import STSkillProficiencyLevels
+from app.models.st_user_certifications import STUserCertifications
+from app.models.st_user_skills import STUserSkills
+from app.models.st_workflow_master import STWorkflowMaster
+from alembic import context
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-database_url = os.getenv("DB_URL")
-if not database_url:
-    raise RuntimeError("DB_URL environment variable is not set")
-database_url = database_url.replace("%", "%%")
-config.set_main_option("sqlalchemy.url", database_url)
+
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
@@ -67,20 +72,15 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    # I have done this "jeevan"
-    # connectable = engine_from_config(
-    #     config.get_section(config.config_ini_section, {}),
-    #     prefix="sqlalchemy.",
-    #     poolclass=pool.NullPool,
-    # )
+    connectable = engine_from_config(
+        config.get_section(config.config_ini_section, {}),
+        prefix="sqlalchemy.",
+        poolclass=pool.NullPool,
+    )
 
-    connectable = engine
     with connectable.connect() as connection:
         context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            compare_type=True,
-            compare_server_default=True,
+            connection=connection, target_metadata=target_metadata
         )
 
         with context.begin_transaction():
