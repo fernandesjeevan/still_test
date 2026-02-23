@@ -7,6 +7,7 @@ from app.models.nc_config_table import NCConfigTable
 from app.models.nc_employee_details import NCEmployeeDetails
 from app.models.nc_monitor_log_parent import NCMonitorLogParent
 from app.models.nc_monitor_log_child import NCMonitorLogChild
+from app.models.nc_role_master import NCRoleMasters
 from app.models.nc_status_colour import NCStatusColour
 from app.models.st_attachment_logs import STAttachmentLogs
 from app.models.st_audit_logs import STAuditLogs
@@ -19,11 +20,20 @@ from app.models.st_user_certifications import STUserCertifications
 from app.models.st_user_skills import STUserSkills
 from app.models.st_workflow_master import STWorkflowMaster
 from alembic import context
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # loads .env into os.environ
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
+database_url = os.getenv("DB_URL")
+if not database_url:
+    raise RuntimeError("DB_URL not set")
+
+config.set_main_option("sqlalchemy.url", database_url)
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:

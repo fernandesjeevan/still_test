@@ -26,7 +26,7 @@ class STAuditLogs(Base):
     action_taken: Mapped[str | None] = mapped_column(String(4000), nullable=True)
 
     action_time: Mapped[datetime | None] = mapped_column(
-        LargeBinary,
+        TIMESTAMP,
         nullable=True
     )
 
@@ -36,12 +36,12 @@ class STAuditLogs(Base):
 
     created_on: Mapped[datetime | None] = mapped_column(
         TIMESTAMP,
-        nullable=True
+        default= func.now()
     )
 
     modified_on: Mapped[datetime | None] = mapped_column(
         TIMESTAMP,
-        nullable=True,
+        onupdate=func.now(),
         default=func.now()
     )
 

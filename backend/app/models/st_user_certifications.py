@@ -3,10 +3,11 @@ from sqlalchemy import (
     String,
     Boolean,
     Date,
-    LargeBinary,
+    LargeBinary,  
     Identity,
     TIMESTAMP,
     Text,
+    func
 )
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime, date
@@ -48,12 +49,13 @@ class STUserCertifications(Base):
 
     created_on: Mapped[datetime | None] = mapped_column(
         TIMESTAMP,
-        nullable=True
+        default=func.now()
     )
 
     modified_on: Mapped[datetime | None] = mapped_column(
         TIMESTAMP,
-        nullable=True
+        onupdate=func.now(),
+        default=func.now()
     )
 
     expired_certification: Mapped[bool | None] = mapped_column(Boolean, nullable=True)

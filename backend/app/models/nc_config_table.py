@@ -29,7 +29,7 @@ class NCConfigTable(Base):
     )
 
     icon_link: Mapped[str | None] = mapped_column(Text, nullable=True)
-    group: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    group_col: Mapped[str | None] = mapped_column(String(50), nullable=True)
     sort_order: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     is_active: Mapped[bool | None] = mapped_column(

@@ -38,7 +38,8 @@ class NCEmployeeDetails(Base):
 
     modified_on: Mapped[datetime | None] = mapped_column(
         TIMESTAMP,
-        onupdate=func.now()
+        onupdate=func.now(),
+        default=func.now()
     )
 
     middle_name: Mapped[str | None] = mapped_column(String(500))
