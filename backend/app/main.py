@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI,status,HTTPException    
-from .models.user_skills import UserSkills
-from .models.employee_details import EmployeeDetails
+from .models.st_user_skills import STUserSkills
+from .models.nc_employee_details import NCEmployeeDetails
 from .schemas.skill_submission_schema import SkillSubmissionFormSchema
 from .schemas.signup_form_schema import SignupFormSchema
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,8 +46,8 @@ async def home():
 
 @app.post("/signup",status_code=status.HTTP_201_CREATED)
 async def signup(signup_form: SignupFormSchema, db:Session =Depends(get_db)):
-    print("hello")
-    stmt = select(EmployeeDetails).where(EmployeeDetails.email==signup_form.email)
+    # print("hello")
+    stmt = select(NCEmployeeDetails).where(NCEmployeeDetails.email==signup_form.email)
     existing_user=db.execute(stmt).first()
     if(existing_user):
          raise HTTPException(   
@@ -57,7 +57,7 @@ async def signup(signup_form: SignupFormSchema, db:Session =Depends(get_db)):
     
 
     # Create new user
-    emp_db_obj = EmployeeDetails(
+    emp_db_obj = NCEmployeeDetails(
         email = signup_form.email,
         password = hash_password(signup_form.password)
     )
@@ -75,7 +75,7 @@ async def skill_submit(
 ):
     # submitter_name='Jeevan Fernandes' submitter_email='jeevan.fernandes@gmail.com' skill='c++' proficiency_level=3 description='adsfds' evidence=None approver_name='Jeevan Fernandes' approver_email='jeevan.fernandes111@gmail.com'
     submission_obj = SkillSubmissionFormSchema.model_validate(form_data)
-    submission_db_obj = UserSkills(
+    submission_db_obj = STUserSkills(
 
         # submitter_name= submission_obj.submitter_name,
         employee = submission_obj.submitter_id,
@@ -97,6 +97,6 @@ async def skill_submit(
     #     contents = await evidence.read()
         
     #     print("File:", evidence.filename, len(contents)) 
-    print(form_data)
+    # print(form_data)
 
     return {"message": "Received successfully"}

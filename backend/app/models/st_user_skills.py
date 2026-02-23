@@ -1,26 +1,38 @@
-from sqlalchemy import TIMESTAMP, BigInteger, Boolean, ForeignKey, String, Integer, Identity, Text, func
-from  sqlalchemy.orm import Mapped, mapped_column,relationship
-from ..models.employee_details import EmployeeDetails
+from sqlalchemy import (
+    TIMESTAMP,
+    BigInteger,
+    Boolean,
+    ForeignKey,
+    String,
+    Integer,
+    Identity,
+    Text,
+    func,
+)
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ..db.base import Base
 from datetime import datetime
-class UserSkills(Base):
+
+
+class STUserSkills(Base):
     __tablename__ = "ST_UserSkills"
     user_skill_id: Mapped[int] = mapped_column(
-        Integer,
-        Identity(start=1, cycle=False),
-        primary_key=True,
-        index=True
+        Integer, Identity(start=1, cycle=False), primary_key=True, index=True
     )
 
     skill_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    skill: Mapped[str| None] = mapped_column(String(100))
+    skill: Mapped[str | None] = mapped_column(String(100))
     proficiency_level: Mapped[int | None] = mapped_column(Integer, nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
-    employee: Mapped[int | None] = mapped_column(Integer,#ForeignKey("nc_employee_details.user_id"),
-                                                 nullable=True)
+    employee: Mapped[int | None] = mapped_column(
+        Integer,  # ForeignKey("nc_employee_details.user_id"),
+        nullable=True,
+    )
     status: Mapped[str | None] = mapped_column(String(200), nullable=True)
-    line_manager: Mapped[int | None] = mapped_column(Integer,#ForeignKey("nc_employee_details.user_id"),
-                                                      nullable=True)
+    line_manager: Mapped[int | None] = mapped_column(
+        Integer,  # ForeignKey("nc_employee_details.user_id"),
+        nullable=True,
+    )
     comments: Mapped[str | None] = mapped_column(Text, nullable=True)
     manager_rating: Mapped[int | None] = mapped_column(Integer, nullable=True)
     category: Mapped[str | None] = mapped_column(String(400), nullable=True)
@@ -31,15 +43,11 @@ class UserSkills(Base):
     is_run_flow: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
 
     created_on: Mapped[datetime] = mapped_column(
-        TIMESTAMP,
-        server_default=func.now(),
-        default=func.now()
+        TIMESTAMP, server_default=func.now(), default=func.now()
     )
 
     modified_on: Mapped[datetime] = mapped_column(
-        TIMESTAMP,
-        onupdate=func.now(),
-        default=func.now()
+        TIMESTAMP, onupdate=func.now(), default=func.now()
     )
 
     action_taken_by: Mapped[str | None] = mapped_column(String(1000), nullable=True)
@@ -60,4 +68,3 @@ class UserSkills(Base):
     # manager_details: Mapped["EmployeeDetails"] = relationship(
     #     foreign_keys=[line_manager]
     # )
-
