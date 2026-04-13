@@ -19,7 +19,7 @@ def skill_form_parser(
     approverName: str = Form(...),
     approverEmail: str = Form(...),
 )->SkillSubmissionFormSchema:
-   
+    
     return SkillSubmissionFormSchema(
         submitter_id = submitterId,
         submitter_name=submitterName,

@@ -2,21 +2,46 @@ import { useEffect, useState } from "react";
 import { Rows, Star } from "lucide-react";
 import NoProfile from "../assets/noprofile.jpg";
 import { axiosInstance } from "../../lib/axios";
-
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 export default function AddSkillDrawer({ open, onClose }) {
-  const skills = [
-    { id: 1, skill: "c#" },
-    { id: 2, skill: "js" },
-    { id: 3, skill: "c++" },
-    { id: 4, skill: "R" },
-    { id: 5, skill: "D" },
-  ];
+  // const skills = [
+  //   { id: 1, skill: "c#" },
+  //   { id: 2, skill: "js" },
+  //   { id: 3, skill: "c++" },
+  //   { id: 4, skill: "R" },
+  //   { id: 5, skill: "D" },
+  // ];
+
+  const [data, setData] = useState(null);
+  const [skills,setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axiosInstance.get("/skills");
+        if (res.status == 200) {
+          console.log("did it work", res.data);
+          setSkills(res.data.skills);
+          setLoading(false);
+          // toast.success("Skill posted successfully");
+          // onClose();
+        }
+      } catch (error) {
+        console.log("is it coming to catch",error)
+        setError(error);
+      }
+    };
+    fetchData();
+  }, []); // Empty dependency array
+ 
   const [skill, setSkill] = useState("");
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [description, setDescription] = useState("");
   const [fileName, setFileName] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit =  async (e) =>{
     e.preventDefault();
     const formData = new FormData(e.target)
@@ -31,11 +56,18 @@ export default function AddSkillDrawer({ open, onClose }) {
 
     try{
       const res = await axiosInstance.post('/skillSubmit',formData)
-      console.log(res, "this is result from 8000 idk whats it")
+      if(res.status==200){
+        console.log('did it work')
+        toast.success("Skill posted successfully")
+        onClose();
+      } 
       
     }
     catch(error){
-      console.log(error, "this is the error")
+      if (!res.ok && res.status == 401)
+      {
+        navigate("/",replace)
+      }
     }
    // console.log(data) 
   }
@@ -70,7 +102,12 @@ export default function AddSkillDrawer({ open, onClose }) {
     setFileName("");
   }
 }, [open]);
-
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
   return (
     <>
       {open && (
@@ -103,8 +140,8 @@ export default function AddSkillDrawer({ open, onClose }) {
                 Select a skill
               </option>
               {skills.map((skill) => (
-                <option key={skill.id} value={skill.skill}>
-                  {skill.skill}
+                <option key={skill.skill_id} value={skill.skill_name}>
+                  {skill.skill_name}
                 </option>
               ))}
             </select>
@@ -130,7 +167,7 @@ export default function AddSkillDrawer({ open, onClose }) {
                   onMouseEnter={() => setHoverRating(level.value)}
                   className="flex flex-col items-center cursor-pointer"
                 >
-                  
+                   
                   <Star
                     size={44}
                     strokeWidth={1.5}
